@@ -1,0 +1,36 @@
+<div class="autenticacion" *ngIf="!getLogged()">
+  <h1 style="font-size:22px; text-align:center;">
+    Bienvenido a nuestra aplicación
+  </h1>
+  <h4 style="font-size:16px; text-align:center;">
+    Por favor <a routerLink="/inicio-sesion">inicie sesión</a>
+  </h4>
+</div>
+<div *ngIf="getLogged()">
+  <div class="container">
+    <!-- Breadcrump Bootstrap -->
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Inicio</li>
+      </ol>
+    </nav>
+  </div>
+  <div class="container menu-inicio">
+    <div class="box rojo" routerLink="/compras" *ngIf="autenticacionService.getPermisoCompras()">
+      <span><i class="fas fa-shopping-cart"></i></span>
+      <p>Compras</p>
+    </div>
+    <div class="box verde" routerLink="/ventas" *ngIf="autenticacionService.getPermisoVentas()">
+      <span><i class="fas fa-hand-holding-usd"></i></span>
+      <p>Ventas</p>
+    </div>
+    <div class="box azul" *ngIf="autenticacionService.getPermisoInfo()"> 
+      <span><i class="fas fa-info"></i></span>
+      <p>Información</p>
+    </div>
+    <div class="box naranja" routerLink="/listado-usuarios" *ngIf="autenticacionService.getPermisoListadoUsuarios()">
+      <span><i class="fas fa-users"></i></span>
+      <p>Usuarios</p>
+    </div>
+  </div>
+</div>

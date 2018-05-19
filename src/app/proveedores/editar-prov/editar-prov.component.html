@@ -1,0 +1,72 @@
+<!-- Barra fija lateral -->
+<div class="barra-fija">
+  <div title="Proveedores" routerLink="/listado-proveedores">
+    <i class="fas fa-address-book"></i>
+  </div>
+  <div title="Facturas" routerLink="/listado-facturas">
+    <i class="fas fa-file-alt"></i>
+  </div>
+</div>
+<div class="col-md-12">
+  <!-- Breadcrump Bootstrap -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/inicio">Inicio</a></li>
+      <li class="breadcrumb-item"><a routerLink="/compras">Compras</a></li>
+      <li class="breadcrumb-item"><a routerLink="/listado-proveedores">Proveedores</a></li>
+      <li class="breadcrumb-item active" aria-current="page" *ngIf="autenticacionService.getPermisoProveedores()">Editar proveedor</li>
+      <li class="breadcrumb-item active" aria-current="page" *ngIf="!autenticacionService.getPermisoProveedores()">Visualizar proveedor</li>
+    </ol>
+  </nav>
+</div>
+<div class="col-md-12 titulo">
+  <span *ngIf="autenticacionService.getPermisoProveedores()">Editar proveeedor</span>
+  <span *ngIf="!autenticacionService.getPermisoProveedores()">Visualizar proveeedor</span>
+  <button class="btn btn-primary" routerLink="/listado-proveedores">
+    Volver
+  </button>
+</div>
+<div class="col-md-8 offset-md-2 col-12">
+  <div class="formulario">
+    <form [formGroup]="proveedorForm" (ngSubmit)="editarProv()">
+      <div class="form-group">
+        <input type="text" class="form-control" formControlName="nombre" placeholder="Nombre" [(ngModel)]="proveedor.nombre" [readonly]="!autenticacionService.getPermisoProveedores()">
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" formControlName="cif" placeholder="CIF" #cif [(ngModel)]="proveedor.cif" [readonly]="!autenticacionService.getPermisoProveedores()">
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" formControlName="direccion" placeholder="Dirección" [(ngModel)]="proveedor.direccion" [readonly]="!autenticacionService.getPermisoProveedores()">
+      </div>
+      <div class="form-group">
+        <input type="number" class="form-control" formControlName="cp" placeholder="Código Postal" [(ngModel)]="proveedor.cp" [readonly]="!autenticacionService.getPermisoProveedores()">
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" formControlName="localidad" placeholder="Localidad" [(ngModel)]="proveedor.localidad" [readonly]="!autenticacionService.getPermisoProveedores()">
+      </div>
+      <div class="form-group">
+        <select class="form-control" name="provincia" formControlName="provincia" [(ngModel)]="proveedor.provincia" *ngIf="autenticacionService.getPermisoProveedores()">
+          <option *ngFor="let provincia of provincias" [ngValue]="provincia">{{provincia}}</option>
+        </select>
+        <input type="text" class="form-control" formControlName="provincia" [(ngModel)]="proveedor.provincia" [readonly]="!autenticacionService.getPermisoProveedores()" *ngIf="!autenticacionService.getPermisoProveedores()">
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" formControlName="telefono" placeholder="Teléfono" [(ngModel)]="proveedor.telefono" [readonly]="!autenticacionService.getPermisoProveedores()">
+      </div>
+      <div class="form-group">
+        <input type="email" class="form-control" formControlName="email" placeholder="Correo electrónico" [(ngModel)]="proveedor.email" [readonly]="!autenticacionService.getPermisoProveedores()"> 
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" formControlName="contacto" placeholder="Persona de contacto" [(ngModel)]="proveedor.contacto" [readonly]="!autenticacionService.getPermisoProveedores()">
+      </div>
+      <div class="form-group" *ngIf="autenticacionService.getPermisoProveedores()">
+        <button type="submit" class="btn btn-primary">
+          <span>Guardar cambios</span>
+        </button>
+        <button routerLink="/listado-proveedores" class="btn btn-danger">Cancelar</button>  
+      </div>
+    </form>
+    <p class="alert alert-warning" [@alerta]="estadoAlerta">{{ mensaje }}</p>
+  </div>
+</div>
+  

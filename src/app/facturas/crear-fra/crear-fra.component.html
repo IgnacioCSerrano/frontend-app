@@ -1,0 +1,105 @@
+<!-- Barra fija lateral -->
+<div class="barra-fija">
+  <div title="Proveedores" routerLink="/listado-proveedores">
+    <i class="fas fa-address-book"></i>
+  </div>
+  <div title="Facturas" routerLink="/listado-facturas">
+    <i class="fas fa-file-alt"></i>
+  </div>
+</div>
+<div class="col-md-12">
+  <!-- Breadcrump Bootstrap -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/inicio">Inicio</a></li>
+      <li class="breadcrumb-item"><a routerLink="/compras">Compras</a></li>
+      <li class="breadcrumb-item"><a routerLink="/listado-facturas">Factura</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Añadir factura</li>
+    </ol>
+  </nav>
+</div>
+<div class="col-md-12 titulo">
+  <span>Añadir nueva factura</span>
+  <button class="btn btn-primary" routerLink="/listado-facturas">
+    Volver
+  </button>
+</div>
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+    <div class="formulario">
+      <form [formGroup]="fraForm" (ngSubmit)="crearFra()">
+        <div class="row">
+          <div class="col-md-6">
+            <label for="proveedor">Proveedor</label>
+            <input type="text" class="form-control" formControlName="proveedor" #proveedor>
+          </div>
+          <div class="col-md-6">
+            <label for="cif">CIF</label>
+            <input type="text" class="form-control" formControlName="cif" #cif [(ngModel)]="fraForm.value.cif">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <label for="fecha">Fecha de factura</label>
+            <input type="date" class="form-control" formControlName="fecha">
+          </div>
+          <div class="col-md-8">
+            <label for="concepto">Concepto</label>
+            <input type="text" class="form-control" formControlName="concepto">    
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <label for="base">Base imponible (€)</label>
+            <input type="number" class="form-control" formControlName="base">
+          </div>
+          <div class="col-md-4 radiobotones">
+            <!-- Bootstrap (Forms - Checkboxes and radios - Default)-->
+            <div class="form-check"> 
+              <input class="form-check-input" type="radio" [value]=true formControlName="retencion">
+              <label class="form-check-label">
+                Con retención IRPF
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" [value]=false formControlName="retencion">
+              <label class="form-check-label" for="exampleRadios1">
+                Sin retención IRPF
+              </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label for="tipo">IVA (%)</label>
+            <select name="tipo" class="form-control" formControlName="tipo" [(ngModel)]="fraForm.value.tipo">
+              <option value="0">0</option>
+              <option value="4">4</option>
+              <option value="10">10</option>
+              <option value="21">21</option>
+            </select>
+          </div>    
+        </div>
+        <div class="row">
+          <div class="col-md-4" *ngIf="!retencion"></div> 
+          <div class="col-md-4" *ngIf="retencion"> 
+            <label for="irpf">Retención IRPF</label>
+            <input type="text" class="form-control" formControlName="irpf" [(ngModel)]="fraForm.value.irpf" readonly>
+          </div>
+          <div class="col-md-4">
+            <label for="importe">Importe IVA</label>
+            <input type="text" class="form-control" formControlName="importe" [(ngModel)]="fraForm.value.importe" readonly>
+          </div>
+          <div class="col-md-4">
+            <label for="total">Total factura (IVA incluído)</label>
+            <input type="text" class="form-control" formControlName="total" [(ngModel)]="fraForm.value.total" readonly>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">
+          <span *ngIf="!enviando">Registrar factura</span>
+          <span *ngIf="enviando"><i class="fas fa-spinner fa-pulse"></i></span> 
+        </button> 
+        <button routerLink="/listado-facturas" class="btn btn-danger">Cancelar</button>
+      </form>
+    </div>
+    <p class="alert alert-warning" [@alerta]="estadoAlerta">{{ mensaje }}</p>
+  </div>
+</div>

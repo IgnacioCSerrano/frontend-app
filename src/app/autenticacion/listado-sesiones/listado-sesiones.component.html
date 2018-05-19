@@ -1,0 +1,43 @@
+<div *ngIf="autenticacionService.getPermisoListadoUsuarios()">
+  <div class="container">
+    <!-- Breadcrump Bootstrap -->
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/inicio">Inicio</a></li>
+        <li class="breadcrumb-item"><a routerLink="/listado-usuarios">Usuarios</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Sesiones</li>
+      </ol>
+    </nav>
+  </div>
+  <div class="container titulo" style="margin-top: 34px; margin-bottom: 40px;">
+    <span>Listado de sesiones: &nbsp; <strong>{{ email }}</strong></span>
+    <button class="btn btn-primary" routerLink="/listado-usuarios">
+      Volver
+    </button>
+  </div>
+  <div class="container">
+    <table class="table table-bordered table-striped">
+      <tr>
+        <th>Login / Logout</th>
+        <th>Duración</th>
+      </tr>
+      <tr *ngFor="let sesion of sesiones">
+        <td>
+          <span *ngIf="sesion.login">
+            <i class="fas fa-sign-in-alt valido"></i>
+            &nbsp;
+            {{ sesion.login | date: 'medium' }}
+          </span>
+          <span *ngIf="sesion.logout">
+            {{ sesion.logout | date: 'medium' }}
+            &nbsp;
+            <i class="fas fa-sign-out-alt no-valido"></i>
+          </span>
+        </td>
+        <td>
+            {{ sesion.duracion }}
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

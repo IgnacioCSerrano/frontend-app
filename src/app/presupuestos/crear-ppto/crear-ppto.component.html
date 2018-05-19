@@ -1,0 +1,156 @@
+<!-- Barra fija lateral -->
+<div class="barra-fija">
+  <div title="Clientes" routerLink="/listado-clientes">
+    <i class="far fa-address-book"></i>
+  </div>
+  <div title="Presupuestos" routerLink="/listado-presupuestos">
+    <i class="fas fa-clipboard-list"></i>
+  </div>
+  <div title="Articulos" routerLink="/listado-articulos">
+    <i class="fas fa-archive"></i>
+  </div>
+</div>
+<div class="col-md-12">
+  <!-- Breadcrump Bootstrap -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/inicio">Inicio</a></li>
+      <li class="breadcrumb-item"><a routerLink="/ventas">Ventas</a></li>
+      <li class="breadcrumb-item"><a routerLink="/listado-presupuestos">Presupuesto</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Añadir presupuesto</li>
+    </ol>
+  </nav>
+</div>
+<div class="col-md-12 titulo">
+  <span>Añadir nuevo presupuesto</span>
+  <button class="btn btn-primary" routerLink="/listado-presupuestos">
+    Volver
+  </button>
+</div>
+<div style="margin-bottom:50px" class="row">
+  <div style="margin-top:15px;" class="col-md-8 offset-md-2">
+    <div>
+      <form [formGroup]="pptoForm">
+        <div style="margin-bottom:50px;" class="form-row">
+          <div class="form-group col-md-4">
+            <label for="cliente">Cliente</label>
+            <input type="text" class="form-control" formControlName="cliente" list="clientes">
+              <datalist id="clientes">
+                <option *ngFor="let cliente of clientes" [value]="cliente.nombre">
+                  {{ cliente.nombre }}
+                </option>
+              </datalist>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="cif">CIF</label>
+            <input type="text" style="text-align:initial" class="form-control" formControlName="cif" [(ngModel)]="pptoForm.value.cif" readonly>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="fecha">Fecha</label>
+            <input type="date" class="form-control" formControlName="fecha">
+          </div>
+        </div>
+        <div class="form-row" style="margin-top:30px; margin-bottom:10px">
+          <div class="col-md-11 titulo">
+            <span>Artículos</span>
+          </div>
+          <div style="text-align:right" class="col-md-1">
+            <button class="btn btn-success" (click)="addItem()">
+              <i class="fas fa-plus-circle"></i>
+            </button>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-1">
+            <label>Nº</label>
+          </div>
+          <div class="form-group col-md-2">
+            <label>Artículo</label>
+          </div>
+          <div class="form-group col-md-1">
+            <label>Cantidad</label>
+          </div>
+          <div style="text-align:right" class="form-group col-md-1">
+            <label>IVA (%)</label>
+          </div>
+          <div style="text-align:right" class="form-group col-md-2">
+            <label>Precio</label>
+          </div>
+          <div style="text-align:right" class="form-group col-md-2">
+            <label>Importe IVA</label>
+          </div>
+          <div style="text-align:right" class="form-group col-md-2">
+            <label>Importe total</label>
+          </div>
+        </div>
+        <div formArrayName="items">
+          <div *ngFor="let item of pptoForm.controls.items.controls; let i=index">
+            <div [formGroupName]="i" class="form-row">
+              <div class="form-group col-md-1">
+                <input type="text" style="text-align:center" class="form-control" value="{{ i+1 }}" disabled>
+              </div>
+              <div class="form-group col-md-2">
+                <input type="text" class="form-control" formControlName="articulo" list="articulos">
+                  <datalist id="articulos">
+                    <option *ngFor="let articulo of articulos" [value]="articulo.referencia">
+                      {{ articulo.referencia }}
+                    </option>
+                  </datalist>
+              </div>
+              <div class="form-group col-md-1">
+                <input type="number" class="form-control" formControlName="cantidad">
+              </div>
+              <div class="form-group col-md-1">
+                <select name="tipo" style="text-align:right" class="form-control" formControlName="tipo" [(ngModel)]="pptoForm.value.items[i].tipo">
+                  <option value="0">0</option>
+                  <option value="4">4</option>
+                  <option value="10">10</option>
+                  <option value="21">21</option>
+                </select>
+              </div>
+              <div class="form-group col-md-2">
+                <input type="text" class="form-control" formControlName="precio" [(ngModel)]="pptoForm.value.items[i].precio" readonly>
+              </div>
+              <div class="form-group col-md-2">
+                <input type="text" class="form-control" formControlName="iva" [(ngModel)]="pptoForm.value.items[i].iva" readonly>
+              </div>
+              <div class="form-group col-md-2">
+                <input type="text" class="form-control" formControlName="importe" [(ngModel)]="pptoForm.value.items[i].importe" readonly>               
+              </div>
+              <div style="text-align:right" class="form-group col-md-1">
+                <button class="btn btn-danger" (click)="removeItem(i)">
+                  <i class="fas fa-minus-circle"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-md-9"></div>
+          <div class="col-md-3">
+            <hr>
+          </div>
+        </div>
+        <div class="form-row" style="display:flex; align-items:flex-end;">
+          <div class="col-md-9"></div>
+          <div style="text-align:right" class="col-md-3">
+            <label for="total" style="font-weight:bold">Total Presupuesto</label>
+            <input type="text" class="form-control" formControlName="total" [(ngModel)]="pptoForm.value.total" readonly>
+          </div>
+        </div>
+        <div style="margin-top:30px;" class="form-row">
+          <div class="col-md-6"></div>
+          <div style="text-align:right" class="col-md-6">
+            <button class="btn btn-danger" routerLink="/listado-presupuestos">
+              Cancelar
+            </button>
+            <button class="btn btn-primary" (click)="crearPresupuesto()">
+              Añadir presupuesto
+            </button>
+          </div>
+        </div>
+      </form>
+      <!-- <pre>{{pptoForm.value | json}}</pre> -->
+    </div>
+  </div>
+</div>

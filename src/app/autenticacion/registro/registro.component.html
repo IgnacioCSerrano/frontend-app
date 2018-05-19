@@ -1,0 +1,50 @@
+<div class="col-md-6 offset-md-3 col-12 autenticacion">
+  <h1 style="font-size:22px; text-align:center">Introduzca sus datos</h1>
+  <form [formGroup]="registroForm" (ngSubmit)="registroUsuario()">
+    <div class="form-group">
+      <label for="nombre">Nombre</label>
+      <span *ngIf="registroForm.controls.nombre.valid && registroForm.controls.nombre.touched">
+        &nbsp; <i class="fas fa-check-circle valido"></i>
+      </span>
+      <span  class="no-valido" *ngIf="registroForm.controls.nombre.invalid && registroForm.controls.nombre.touched">
+        &nbsp; <i class="far fa-times-circle"></i> Campo obligatorio
+      </span>
+      <input type="text" class="form-control" formControlName="nombre" #nombre>
+    </div>
+    <div class="form-group">
+      <label for="email">Correo electrónico</label>
+      <span *ngIf="registroForm.controls.email.valid && registroForm.controls.email.touched">
+        &nbsp; <i class="fas fa-check-circle valido"></i>
+      </span>
+      <span class="no-valido" *ngIf="registroForm.controls.email.invalid && registroForm.controls.email.touched">
+        &nbsp; <i class="far fa-times-circle"></i> Escriba un correo electrónico válido
+      </span>
+      <input type="email" class="form-control" formControlName="email">
+    </div>
+    <div class="form-group">
+      <label for="password">Contraseña</label>
+      <span *ngIf="registroForm.controls.password.valid">
+        &nbsp; <i class="fas fa-check-circle valido"></i>
+      </span>
+      <!-- <span class="no-valido" *ngIf="registroForm.controls.password.invalid && registroForm.controls.password.touched">
+        &nbsp; <i class="far fa-times-circle"></i> Contraseña debe tener al menos 8 caracteres, mayúscula y minúscula
+      </span> -->
+      <input type="password" class="form-control" formControlName="password">
+    </div>
+    <div class="form-group">
+      <label for="password">Repita la contraseña</label>
+      <span *ngIf="registroForm.value.password === registroForm.value.confirm && registroForm.controls.password.valid && registroForm.controls.password.dirty">
+        &nbsp; <i class="fas fa-check-circle valido"></i>
+      </span>
+      <span class="no-valido" *ngIf="registroForm.value.password != registroForm.value.confirm && registroForm.controls.password.valid && registroForm.controls.confirm.touched">
+        &nbsp; <i class="far fa-times-circle"></i> Contraseñas no coinciden
+      </span>
+      <input type="password" class="form-control" formControlName="confirm">
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary" [disabled]="registroForm.invalid || ( registroForm.value.password != registroForm.value.confirm )">Crear cuenta</button> <!-- validación de contraseñas iguales ('registroForm.value.password != registroForm.value.confirm') no forma parte de clase 'Validators' ('registro.component.ts') (se establece mediante expresión regular), por lo que tiene que indicarse aparte -->
+    </div>
+  </form>
+  <p class="alert alert-warning mensaje" [@alerta]="estadoAlerta">{{ mensaje }}</p>
+  <p>Si ya dispone de cuenta, pulse <a routerLink="/inicio-sesion">aquí</a></p>
+</div>

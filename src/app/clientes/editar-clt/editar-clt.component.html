@@ -1,0 +1,75 @@
+<!-- Barra fija lateral -->
+<div class="barra-fija">
+  <div title="Clientes" routerLink="/listado-clientes">
+    <i class="far fa-address-book"></i>
+  </div>
+  <div title="Presupuestos" routerLink="/listado-presupuestos">
+    <i class="fas fa-clipboard-list"></i>
+  </div>
+  <div title="Articulos" routerLink="/listado-articulos">
+    <i class="fas fa-archive"></i>
+  </div>
+</div>
+<div class="col-md-12">
+  <!-- Breadcrump Bootstrap -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/inicio">Inicio</a></li>
+      <li class="breadcrumb-item"><a routerLink="/ventas">Ventas</a></li>
+      <li class="breadcrumb-item"><a routerLink="/listado-clientes">Clientes</a></li>
+      <li class="breadcrumb-item active" aria-current="page" *ngIf="autenticacionService.getPermisoClientes()">Editar cliente</li>
+      <li class="breadcrumb-item active" aria-current="page" *ngIf="!autenticacionService.getPermisoClientes()">Visualizar cliente</li>
+    </ol>
+  </nav>
+</div>
+<div class="col-md-12 titulo">
+  <span *ngIf="autenticacionService.getPermisoClientes()">Editar cliente</span>
+  <span *ngIf="!autenticacionService.getPermisoClientes()">Visualizar cliente</span>
+  <button class="btn btn-primary" routerLink="/listado-clientes">
+    Volver
+  </button>
+</div>
+<div class="col-md-8 offset-md-2 col-12">
+  <div class="formulario">
+    <form [formGroup]="clienteForm" (ngSubmit)="editarClt()">
+      <div class="form-group">
+        <input type="text" class="form-control" formControlName="nombre" placeholder="Nombre" [(ngModel)]="cliente.nombre" [readonly]="!autenticacionService.getPermisoClientes()">
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" formControlName="cif" placeholder="CIF" #cif [(ngModel)]="cliente.cif" [readonly]="!autenticacionService.getPermisoClientes()">
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" formControlName="direccion" placeholder="Dirección" [(ngModel)]="cliente.direccion" [readonly]="!autenticacionService.getPermisoClientes()">
+      </div>
+      <div class="form-group">
+        <input type="number" class="form-control" formControlName="cp" placeholder="Código Postal" [(ngModel)]="cliente.cp" [readonly]="!autenticacionService.getPermisoClientes()">
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" formControlName="localidad" placeholder="Localidad" [(ngModel)]="cliente.localidad" [readonly]="!autenticacionService.getPermisoClientes()">
+      </div>
+      <div class="form-group">
+        <select class="form-control" name="provincia" formControlName="provincia" [(ngModel)]="cliente.provincia" *ngIf="autenticacionService.getPermisoClientes()">
+          <option *ngFor="let provincia of provincias" [ngValue]="provincia">{{provincia}}</option>
+        </select>
+        <input type="text" class="form-control" formControlName="provincia" [(ngModel)]="cliente.provincia" [readonly]="!autenticacionService.getPermisoClientes()" *ngIf="!autenticacionService.getPermisoClientes()">
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" formControlName="telefono" placeholder="Teléfono" [(ngModel)]="cliente.telefono" [readonly]="!autenticacionService.getPermisoClientes()">
+      </div>
+      <div class="form-group">
+        <input type="email" class="form-control" formControlName="email" placeholder="Correo electrónico" [(ngModel)]="cliente.email" [readonly]="!autenticacionService.getPermisoClientes()"> 
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" formControlName="contacto" placeholder="Persona de contacto" [(ngModel)]="cliente.contacto" [readonly]="!autenticacionService.getPermisoClientes()">
+      </div>
+      <div class="form-group" *ngIf="autenticacionService.getPermisoClientes()">
+        <button type="submit" class="btn btn-primary">
+          <span>Guardar cambios</span>
+        </button>
+        <button routerLink="/listado-clientes" class="btn btn-danger">Cancelar</button>  
+      </div>
+    </form>
+    <p class="alert alert-warning" [@alerta]="estadoAlerta">{{ mensaje }}</p>
+  </div>
+</div>
+  

@@ -1,0 +1,90 @@
+<!-- Barra fija lateral -->
+<div class="barra-fija">
+  <div title="Clientes" routerLink="/listado-clientes">
+    <i class="far fa-address-book"></i>
+  </div>
+  <div title="Presupuestos" routerLink="/listado-presupuestos">
+    <i class="fas fa-clipboard-list"></i>
+  </div>
+  <div title="Articulos" routerLink="/listado-articulos">
+    <i class="fas fa-archive"></i>
+  </div>
+</div>
+<div class="col-md-12">
+  <!-- Breadcrump Bootstrap -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/inicio">Inicio</a></li>
+      <li class="breadcrumb-item"><a routerLink="/ventas">Ventas</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Presupuestos</li>
+    </ol>
+  </nav>
+</div>
+<div class="col-md-12 titulo">
+  <span>Presupuestos</span>
+  <button class="btn btn-primary" routerLink="/crear-presupuesto" *ngIf="autenticacionService.getPermisoClientes()">
+    <i class="fas fa-plus-circle"></i>
+  </button>
+</div>
+<div class="col-md-12">
+  <table class="table table-bordered table-striped">
+    <tr>
+      <th>Nº</th>
+      <th>Cliente</th>
+      <th>CIF</th>
+      <th>Fecha</th>
+      <th>Total</th>
+      <th></th>
+    </tr>
+    <tr *ngFor="let presupuesto of presupuestos">
+      <td>{{ presupuesto.num }}</td>
+      <td>{{ presupuesto.cliente }}</td>
+      <td>{{ presupuesto.cif }}</td>
+      <td>{{ presupuesto.fecha | fecha:presupuesto.fecha }}</td>
+      <td>{{ presupuesto.total }}</td>
+      <td>
+        <div class="botones">
+          <button class="btn btn-success" routerLink="/editar-presupuesto/{{presupuesto._id}}">
+            <span *ngIf="autenticacionService.getPermisoClientes()">
+              <i class="fas fa-edit"></i>
+            </span>
+            <span *ngIf="!autenticacionService.getPermisoClientes()">
+              <i class="fas fa-eye"></i>
+            </span>
+          </button> 
+            <!-- Bootstrap Modal component (Live model) -->
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" (click)="obtenerId(presupuesto._id)" *ngIf="autenticacionService.getPermisoClientes()" disabled>
+            <i class="fas fa-trash-alt"></i>
+          </button>
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    <i class="fas fa-exclamation-triangle"></i>
+                  </h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  ¿Está seguro de que desea eliminar este presupuesto?
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Cancelar
+                  </button>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="borrarPresupuesto()">
+                    Aceptar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>

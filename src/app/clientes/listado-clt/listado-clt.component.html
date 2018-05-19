@@ -1,0 +1,84 @@
+<!-- Barra fija lateral -->
+<div class="barra-fija">
+  <div title="Clientes" routerLink="/listado-clientes">
+    <i class="far fa-address-book"></i>
+  </div>
+  <div title="Presupuestos" routerLink="/listado-presupuestos">
+    <i class="fas fa-clipboard-list"></i>
+  </div>
+  <div title="Articulos" routerLink="/listado-articulos">
+    <i class="fas fa-archive"></i>
+  </div>
+</div>
+<div class="col-md-12">
+  <!-- Breadcrump Bootstrap -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/inicio">Inicio</a></li>
+      <li class="breadcrumb-item"><a routerLink="/ventas">Ventas</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Clientes</li>
+    </ol>
+  </nav>
+</div>
+<div class="col-md-12 titulo">
+  <span>Clientes</span>
+  <button class="btn btn-primary" routerLink="/crear-cliente">
+    <i class="fas fa-plus-circle"></i>  
+  </button>
+</div>
+
+  <!-- Bootstrap Radios -->
+<div class="col-md-12">
+  <div class="custom-control custom-radio custom-control-inline">
+    <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input" (click)="buscarPorNombre()" checked>
+    <label class="custom-control-label" for="customRadioInline1">Búsqueda por nombre</label>
+  </div>
+  <div class="custom-control custom-radio custom-control-inline">
+    <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input" (click)="buscarPorLocalidad()">
+    <label class="custom-control-label" for="customRadioInline2">Búsqueda por localidad</label>
+  </div>
+  <div class="custom-control custom-radio custom-control-inline">
+      <input type="radio" id="customRadioInline3" name="customRadioInline1" class="custom-control-input" (click)="buscarPorNombreLocalidad()">
+      <label class="custom-control-label" for="customRadioInline3">Búsqueda mixta</label>
+    </div>
+</div>
+
+<div class="col-md-12 buscador" *ngIf="mostrarBuscadorNombre">
+  <input type="search" class="form-control" placeholder="Introduzca el nombre del cliente" [formControl]="buscadorNombre">
+</div>
+<div class="col-md-12 buscador" *ngIf="mostrarBuscadorLocalidad">
+  <input type="search" class="form-control" placeholder="Introduzca la localidad del cliente" [formControl]="buscadorLocalidad">
+</div>
+<div class="col-md-12 buscador" *ngIf="mostrarBuscadorNombreLocalidad">
+  <form [formGroup]="buscadorNombreLocalidad" (ngSubmit)="crearConsulta()">
+    <div class="form-row">
+      <div class="col">
+        <input type="text" class="form-control" placeholder="Nombre del cliente" formControlName="nombre">
+      </div>
+      <div class="col">
+        <input type="text" class="form-control" placeholder="Localidad del cliente" formControlName="localidad">    
+      </div>
+      <div class="col">
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="col-md-12 resultados"> 
+
+  <!-- All credits to http://tobiasahlin.com/spinkit/ -->
+    <div class="spinner" *ngIf="searching">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+    </div>
+
+  <p *ngFor="let cliente of clientes" routerLink="/editar-cliente/{{cliente._id}}">Nombre: <strong>{{ cliente.nombre }}</strong> &nbsp; | &nbsp; Localidad: <strong>{{ cliente.localidad }}</strong></p>
+  <span *ngIf="mensaje">No se encontraron coincidencias en nuestra Base de Datos</span>
+
+</div>

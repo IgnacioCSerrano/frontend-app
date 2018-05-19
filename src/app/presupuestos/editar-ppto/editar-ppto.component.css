@@ -1,0 +1,34 @@
+.formulario {
+    padding: 5px 20px;
+    margin: 20px 0;
+    border: 1px solid grey;
+    box-shadow: 3px 3px grey;
+}
+
+.formulario .row {
+    margin-top: 10px;
+}
+
+.formulario button {
+    margin: 20px 0;
+}
+
+.carmesi {
+    color: crimson;
+}
+
+.verde {
+    color: green;
+}
+
+.radiobotones {
+    padding-top: 27px;
+}
+
+h3 {
+    margin: 20px 0;
+}
+
+input[readonly] {
+    text-align: right;
+}
